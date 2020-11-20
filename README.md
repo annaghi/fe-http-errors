@@ -20,5 +20,7 @@ There is one TODO in the code, which in my point of view is crucial:
 log and monitor FE-HTTP errors. We can shortcut the personal contact with the user when fixing bugs.
 We can leave this conversation when the things are going well :)
 
-The prototype is not full, e.g. when you type directly an URL into the browser input, it will not load.
+The prototype is not full
+- when you type directly an URL into the browser input, it will not load.
 E.g. `http://localhost:8081/project/1`
+- the Projects page is just a view, not a full TEA
