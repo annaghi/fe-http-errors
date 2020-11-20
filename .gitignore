@@ -1,0 +1,20 @@
+# elm-package generated files
+elm-stuff/
+
+# elm-repl generated files
+repl-temp-*
+
+# VS Code settings
+.vscode
+
+# IntelliJ settings
+.idea
+
+# elm-make generated files
+public/main.js
+
+# node packages
+node_modules
+
+# npm lock file
+package-lock.json
