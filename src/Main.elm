@@ -34,7 +34,7 @@ main =
 
 
 type Page
-    = Home
+    = Dashboard
     | Projects
     | Project Int Page.Project.Model
     | NotFound
@@ -106,7 +106,7 @@ update msg model =
                 Page.Project.AutoRedirect redirectUrl failure ->
                     case redirectUrl of
                         Just url ->
-                            ( { model | url = url, page = Home, errors = failure :: model.errors }
+                            ( { model | url = url, page = Projects, errors = failure :: model.errors }
                             , Browser.Navigation.replaceUrl model.key (Url.toString url)
                               -- TODO Command for sending report to an error monitoring system (e.g. Sentry)
                             )
@@ -130,7 +130,7 @@ update msg model =
 
 
 type Route
-    = HomeRoute
+    = DashboardRoute
     | ProjectsRoute
     | ProjectRoute Int
 
@@ -138,7 +138,7 @@ type Route
 route : Url.Parser.Parser (Route -> a) a
 route =
     Url.Parser.oneOf
-        [ Url.Parser.map HomeRoute Url.Parser.top
+        [ Url.Parser.map DashboardRoute Url.Parser.top
         , Url.Parser.map ProjectsRoute (Url.Parser.s "projects")
         , Url.Parser.map ProjectRoute (Url.Parser.s "project" </> Url.Parser.int)
         ]
@@ -149,8 +149,8 @@ toPage url =
     case Url.Parser.parse route url of
         Just answer ->
             case answer of
-                HomeRoute ->
-                    Home
+                DashboardRoute ->
+                    Dashboard
 
                 ProjectsRoute ->
                     Projects
@@ -184,7 +184,7 @@ view model =
                 , Html.Attributes.style "width" "500px"
                 ]
                 [ case model.page of
-                    Home ->
+                    Dashboard ->
                         Page.Dashboard.view
 
                     Projects ->
