@@ -3,6 +3,6 @@
     "watch": "elm-live src/Main.elm --pushstate --port=8081 --dir=public --open -- --output=public/main.js --debug"
   },
   "devDependencies": {
-    "elm-live": "^3.4.0"
+    "elm-live": "^4.0.2"
   }
 }

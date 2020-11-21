@@ -28,9 +28,9 @@ type alias Model =
     }
 
 
-initialModel : Model
-initialModel =
-    { id = 0
+initialModel : Int -> Model
+initialModel id =
+    { id = id
     , project = RemoteData.NotAsked
     }
 

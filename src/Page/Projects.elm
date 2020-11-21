@@ -13,7 +13,7 @@ view errors =
         [ Html.Attributes.style "position" "relative" ]
         [ Html.h3 [] [ Html.text "Projects" ]
         , Html.ul []
-            [ internalLinkView "/project/0" "404 Project"
+            [ internalLinkView "/project/0" "Project 404"
             , internalLinkView "/project/1" "Project 1"
             , internalLinkView "/project/2" "Project 2"
             ]

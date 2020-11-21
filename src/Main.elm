@@ -50,13 +50,25 @@ type alias Model =
 
 init : Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
 init url key =
-    ( { key = key
-      , url = url
-      , page = toPage url
-      , errors = []
-      }
-    , Cmd.none
-    )
+    let
+        page : Page
+        page =
+            toPage url
+    in
+    case page of
+        Project id _ ->
+            Page.Project.init id
+                |> Tuple.mapFirst (\_ -> { key = key, url = url, page = page, errors = [] })
+                |> Tuple.mapSecond (Cmd.map ProjectMsg)
+
+        _ ->
+            ( { key = key
+              , url = url
+              , page = page
+              , errors = []
+              }
+            , Cmd.none
+            )
 
 
 
@@ -156,7 +168,7 @@ toPage url =
                     Projects
 
                 ProjectRoute n ->
-                    Project n Page.Project.initialModel
+                    Project n (Page.Project.initialModel n)
 
         Nothing ->
             NotFound

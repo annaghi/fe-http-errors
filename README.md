@@ -14,13 +14,11 @@ npm run watch
 
 ## Notes
 
-The goal of this prototype to show a possible flow of pages on FE-HTTP errors.
+The goal of this prototype is to show a possible flow of pages on FE-HTTP errors.
 
-There is one TODO in the code, which in my point of view is crucial:
+There is one TODO in the code, which is crucial:
 log and monitor FE-HTTP errors. We can shortcut the personal contact with the user when fixing bugs.
 We can leave this conversation when the things are going well :)
 
-The prototype is not full
-- when you type directly an URL into the browser input, it will not load.
-E.g. `http://localhost:8081/project/1`
-- the Projects page is just a view, not a full TEA
+The prototype is not full:
+- the Projects page is just a view, not a full MVU
