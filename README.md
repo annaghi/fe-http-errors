@@ -1,5 +1,9 @@
 # FE HTTP Errors
 
+![](page-flows.gif)
+
+### Development
+
 If you do not have `elm-live` globally then run
 
 ```bash
@@ -12,7 +16,7 @@ Now you can watch and hot-reload the project with:
 npm run watch
 ```
 
-## Notes
+### Notes
 
 The goal of this prototype is to show a possible flow of pages on FE-HTTP errors.
 
