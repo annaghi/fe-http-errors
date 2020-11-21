@@ -12,9 +12,9 @@ import Url
 import Url.Builder
 
 
-redirectUrl : Maybe Url.Url
+redirectUrl : String
 redirectUrl =
-    Url.fromString "http://localhost:8081/projects/"
+    "http://localhost:8081/projects/"
 
 
 domain : String
@@ -44,7 +44,7 @@ init id =
 
 type Msg
     = FetchedProject (RemoteData.WebData Project)
-    | AutoRedirect (Maybe Url.Url) Http.Error
+    | AutoRedirect String Http.Error
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

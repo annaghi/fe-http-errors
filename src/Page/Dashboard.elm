@@ -1,10 +1,15 @@
 module Page.Dashboard exposing (view)
 
 import Html
+import Html.Attributes
+import Http
+import Notice
 
 
-view : Html.Html msg
-view =
+view : List Http.Error -> Html.Html msg
+view errors =
     Html.div
-        []
-        [ Html.h3 [] [ Html.text "Dashboard" ] ]
+        [ Html.Attributes.style "position" "relative" ]
+        [ Html.h3 [] [ Html.text "Dashboard" ]
+        , Notice.view errors
+        ]

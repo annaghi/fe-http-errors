@@ -29,6 +29,11 @@ main =
         }
 
 
+redirectUrl : String
+redirectUrl =
+    "http://localhost:8081/"
+
+
 
 -- MODEL
 
@@ -61,6 +66,23 @@ init url key =
                 |> Tuple.mapFirst (\_ -> { key = key, url = url, page = page, errors = [] })
                 |> Tuple.mapSecond (Cmd.map ProjectMsg)
 
+        NotFound ->
+            case Url.fromString redirectUrl of
+                Just url_ ->
+                    ( { key = key, url = url_, page = Dashboard, errors = [ Http.BadUrl "not found" ] }
+                    , Browser.Navigation.replaceUrl key redirectUrl
+                      -- TODO Command for sending report to an error monitoring system (e.g. Sentry)
+                    )
+
+                Nothing ->
+                    ( { key = key
+                      , url = url
+                      , page = page
+                      , errors = []
+                      }
+                    , Cmd.none
+                    )
+
         _ ->
             ( { key = key
               , url = url
@@ -83,11 +105,11 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case Debug.log "msg" msg of
+    case msg of
         ClickLink urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
-                    ( model
+                    ( { model | errors = [] }
                     , Browser.Navigation.pushUrl model.key (Url.toString url)
                     )
 
@@ -115,11 +137,11 @@ update msg model =
 
         ProjectMsg subMsg ->
             case subMsg of
-                Page.Project.AutoRedirect redirectUrl failure ->
-                    case redirectUrl of
-                        Just url ->
-                            ( { model | url = url, page = Projects, errors = failure :: model.errors }
-                            , Browser.Navigation.replaceUrl model.key (Url.toString url)
+                Page.Project.AutoRedirect url failure ->
+                    case Url.fromString url of
+                        Just url_ ->
+                            ( { model | url = url_, page = Projects, errors = failure :: model.errors }
+                            , Browser.Navigation.replaceUrl model.key url
                               -- TODO Command for sending report to an error monitoring system (e.g. Sentry)
                             )
 
@@ -130,7 +152,7 @@ update msg model =
                     case model.page of
                         Project id subModel ->
                             Page.Project.update subMsg subModel
-                                |> Tuple.mapFirst (\m -> { model | page = Project id m, errors = [] })
+                                |> Tuple.mapFirst (\m -> { model | page = Project id m })
                                 |> Tuple.mapSecond (Cmd.map ProjectMsg)
 
                         _ ->
@@ -197,7 +219,7 @@ view model =
                 ]
                 [ case model.page of
                     Dashboard ->
-                        Page.Dashboard.view
+                        Page.Dashboard.view model.errors
 
                     Projects ->
                         Page.Projects.view model.errors
@@ -206,7 +228,7 @@ view model =
                         Html.map ProjectMsg (Page.Project.view subModel)
 
                     NotFound ->
-                        notFoundView
+                        Page.Dashboard.view model.errors
                 ]
             ]
         ]
